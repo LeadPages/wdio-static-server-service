@@ -8,7 +8,7 @@ const DEFAULT_LOG_NAME = 'static-server.txt';
 
 export default class StaticServerLauncher {
   onPrepare({ staticServerFolders: folders, staticServerLog: logging = false,
-      staticServerPort: port = 4567 }) {
+      staticServerPort: port = 4567, staticServer404: server404 = "" }) {
     if (!folders) {
       return Promise.resolve();
     }
@@ -34,6 +34,12 @@ export default class StaticServerLauncher {
       this.log.debug('Mounting folder `%s` at `%s`', path.resolve(folder.path), folder.mount);
       this.server.use(folder.mount, express.static(folder.path));
     });
+
+    if (server404) {
+      this.server.use(/.*/, function(req, res) {
+        res.sendFile(path.resolve(server404));
+      });
+    }
 
     return new Promise((resolve, reject) => {
       this.server.listen(this.port, (err) => {

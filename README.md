@@ -73,6 +73,14 @@ Debugging logs, will print mount points and requests. When `staticServerLogs` is
 
 Type: `Boolean` or `String`
 
+### staticServer404
+
+Path to 404 file (useful for html5 routing that should always fallback to an index.html)
+
+Type: `String`
+
+Default: none
+
 ----
 
 For more information on WebdriverIO see the [homepage](http://webdriver.io).
