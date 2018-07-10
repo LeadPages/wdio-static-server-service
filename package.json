@@ -18,6 +18,7 @@
     "prepublish": "npm prune && npm run build:prod",
     "prepare": "npm run build:prod",
     "build": "cross-env NODE_ENV=development webpack --config webpack.config.js",
+    "prepack": "npm run build:prod",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.config.js"
   },
   "dependencies": {
