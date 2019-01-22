@@ -1,3 +1,7 @@
+# No longer actively maintained!
+
+Leadpages migrated to using [Chrome Headless with Puppeteer](https://github.com/GoogleChrome/puppeteer) for our end-to-end testing, and as a result, we no longer actively maintain this repository. If you would like to fork and maintain this, send us an email and we can direct folks your way. Otherwise - pull requsts are welcome as well.
+
 # WDIO Static Server Service
 
 [![npm](https://img.shields.io/npm/v/wdio-static-server-service.svg?style=flat-square)](https://www.npmjs.com/package/wdio-static-server-service) [![npm](https://img.shields.io/npm/dm/wdio-static-server-service.svg?style=flat-square)](https://www.npmjs.com/package/wdio-static-server-service) [![npm](https://img.shields.io/npm/l/wdio-static-server-service.svg?style=flat-square)](https://www.npmjs.com/package/wdio-static-server-service)
