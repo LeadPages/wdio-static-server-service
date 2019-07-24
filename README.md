@@ -101,6 +101,30 @@ Default: `[]`
  };
 ```
 
+### httpsConfig
+Object with key and certificate paths.
+
+This setting enables to run https server.
+
+Type: `Object<Object>`
+Props:
+ - keyPath `{String}` - Path to private key in PEM format.
+ - certPath `{String}` - Path to cert chains in PEM format.
+
+Default: `false`
+
+``` javascript
+ // wdio.conf.js
+ export.config = {
+   // ...
+   httpsConfig: {
+     keyPath: '~/.keys/key.pem',
+     certPath: '~/.certs/cert.pem'
+   },
+   // ...
+ };
+```
+
 ----
 
 For more information on WebdriverIO see the [homepage](http://webdriver.io).

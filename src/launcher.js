@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 import Log from 'log';
 import morgan from 'morgan';
 import path from 'path';
+import {createServer} from 'https';
 
 const DEFAULT_LOG_NAME = 'static-server.txt';
 
@@ -11,6 +12,7 @@ export default class StaticServerLauncher {
     staticServerFolders: folders,
     staticServerLog: logging = false,
     staticServerPort: port = 4567,
+    httpsConfig: httpsConfig = false,
     staticServerMiddleware: middleware = []
   }) {
     if (!folders) {
@@ -44,14 +46,44 @@ export default class StaticServerLauncher {
     });
 
     return new Promise((resolve, reject) => {
-      this.server.listen(this.port, (err) => {
-        if (err) {
-          reject(err);
-        }
+      if (typeof httpsConfig === 'object') {
+        const {keyPath, certPath} = httpsConfig;
+        const getFile = (filePath) => {
+          return new Promise((res, rej) => {
+            fs.readFile(path.resolve(filePath), 'utf8', (err, data) => {
+              if (err) {
+                rej(err);
+              }
+              res(data);
+            });
+          });
+        };
 
-        this.log.info(`Static server running at http://localhost:${port}`);
-        resolve();
-      });
+        Promise.all([getFile(keyPath), getFile(certPath)])
+          .then((paths) => {
+            const [key, cert] = paths;
+            createServer({key, cert}, this.server)
+              .listen(port, (err) => {
+                if (err) {
+                   reject(err);
+                }
+                this.log.info(`Static server running at https://localhost:${port}`);
+                resolve();
+              });
+          })
+          .catch((err) => {
+            this.log.error(err);
+          });
+      } else {
+        this.server.listen(this.port, (err) => {
+          if (err) {
+            reject(err);
+          }
+
+          this.log.info(`Static server running at http://localhost:${port}`);
+          resolve();
+        });
+      }
     });
   }
 
