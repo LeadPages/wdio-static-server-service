@@ -34,13 +34,13 @@ export default class StaticServerLauncher {
       this.log = new Log('emergency');
     }
 
+    middleware.forEach((ware) => {
+      this.server.use(ware.mount, ware.middleware);
+    });
+
     (Array.isArray(folders) ? folders : [ folders ]).forEach((folder) => {
       this.log.debug('Mounting folder `%s` at `%s`', path.resolve(folder.path), folder.mount);
       this.server.use(folder.mount, express.static(folder.path));
-    });
-
-    middleware.forEach((ware) => {
-      this.server.use(ware.mount, ware.middleware);
     });
 
     return new Promise((resolve, reject) => {
